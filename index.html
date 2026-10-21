@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pizza Palour</title>
+    <title>Pizza Parlour</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,14 +12,14 @@
     <nav>
         <a href="#home">Home</a>
         <a href="#menu">Menu</a>
-        <a href="#" id="nav-account-link">Account</a>
+        <!-- <a href="#" id="nav-account-link">Account</a> -->
         <a href="admin_login.html">MR. ADMIN</a>
     </nav>
 </header>
 
     <!--HERO SECTION-->
     <section id="home" class="hero">
-        <h1>FRESH AND HOT Pizza DELIVERED LOCAL!</h1>
+        <h1>FRESH AND HOT PIZZA DELIVERED LOCAL!</h1>
         <p>ORDER TODAY</p>
     </section>
 
@@ -76,25 +76,28 @@
         <!-- CUSTOMER DELIVERY DETAILS -->
         <div style="margin-bottom: 1.5rem; text-align: left;">
             <div class="form-group" style="margin-bottom: 0.8rem;">
-                <label for="customer-phone">Phone Number:</label>
+                <label for="customer-name" style="font-weight: bold;">Full Name:</label>
+                <input type="text" id="customer-name" placeholder="e.g. Kwadwo Manu" required style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 25px;">
+            </div>
+            <div class="form-group" style="margin-bottom: 0.8rem;">
+                <label for="customer-phone" style="font-weight: bold;">Phone Number:</label>
                 <input type="text" id="customer-phone" placeholder="e.g. 0597787700" required style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 25px;">
             </div>
             <div class="form-group">
-                <label for="customer-location">Delivery Location:</label>
+                <label for="customer-location" style="font-weight: bold;">Delivery Location:</label>
                 <input type="text" id="customer-location" placeholder="e.g. Santasi, Kumasi" required style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 25px;">
             </div>
         </div>
 
         <div class="cart-total">
             <h3>Total: <span id="cart-total-price">₵0.00</span></h3>
-            <button id="checkout-btn" class="btn btn-primary" style="margin-top: 1rem;" disabled>checkout Now!</button>
+            <button id="checkout-btn" class="btn btn-primary" style="margin-top: 1rem;" disabled>Checkout Now via WhatsApp</button>
         </div>
     </section>
 
-    <!--AUTHENTICATION SECTION (HIDDEN BY DEFAULT) -->
+    <!-- AUTHENTICATION SECTION (COMMENTED OUT FOR CASUAL GUEST CHECKOUT)
     <main id="auth-section" class="auth-container" style="display: none;">
         <div id="alert-box" class="alert-hidden"></div>
-        <!--REGISTER FORM-->
         <div class="form-card" id="register-card">
             <h2>New User? Register Here</h2>
             <form id="register-form">
@@ -113,7 +116,6 @@
                 <button type="submit" class="btn btn-secondary">Register</button>
             </form>
         </div>
-        <!--LOGIN FORM-->
         <div class="form-card" id="login-card">
             <h2>Welcome Back! Login</h2>
             <form id="login-form">
@@ -129,6 +131,7 @@
             </form>
         </div>
     </main>
+    -->
 
     <!-- GPS MAP INTEGRATION SECTION -->
     <section style="max-width: 1200px; margin: 3rem auto; padding: 0 2rem; text-align: center;">

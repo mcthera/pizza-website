@@ -6,11 +6,11 @@
     if($_SERVER['REQUEST_METHOD'] === 'POST') {
         $input = json_decode(file_get_contents('php://input'), true);
 
-        $email    = trim($input['email'] ?? 'guest@manupizza.com');
-        $phone    = trim($input['phone'] ?? '0597787700');
-        $location = trim($input['location'] ?? 'Kumasi');
-        $cart     = $input['cart'] ?? [];
-        $total    = $input['total'] ?? 0;
+        $customer_name = trim($input['customer_name'] ?? 'Guest Customer');
+        $phone         = trim($input['phone'] ?? '0597787700');
+        $location      = trim($input['location'] ?? 'Kumasi');
+        $cart          = $input['cart'] ?? [];
+        $total         = $input['total'] ?? 0;
 
         if(empty($cart) || $total <= 0) {
             echo json_encode(['status' => 'error', 'message' => 'Cart is empty or total is invalid.']);
@@ -23,14 +23,14 @@
         }
         $summary = implode(', ', $summary_parts);
 
-        // Matches database columns: phone & location
+        // Uses $customer_name in customer_email column for easy reading on Admin dashboard
         $query = "INSERT INTO orders (customer_email, order_summary, total_price, phone, location, status) VALUES ($1, $2, $3, $4, $5, 'Pending')";
-        $result = pg_query_params($dbconn, $query, [$email, $summary, $total, $phone, $location]);
+        $result = pg_query_params($dbconn, $query, [$customer_name, $summary, $total, $phone, $location]);
 
         if($result) {
-            echo json_encode(['status' => 'success', 'message' => 'Order placed successfully.']);
+            echo json_encode(['status' => 'success', 'message' => 'Order placed successfully. Redirecting to WhatsApp...']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to place order.']);
+            echo json_encode(['status' => 'error', 'message' => 'Failed to place order in database.']);
         }
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);

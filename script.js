@@ -1,9 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
-    const loginForm = document.getElementById('login-form');
-    const alertBox = document.getElementById('alert-box');
-    const authSection = document.getElementById('auth-section');
-    const navAccountLink = document.getElementById('nav-account-link');
 
     function setButtonLoading(button, label) {
         const originalLabel = button.textContent;
@@ -18,65 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
             button.removeAttribute('aria-busy');
         };
     }
-
-    // Toggle Account Section visibility via Navbar link
-    navAccountLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (authSection.style.display === 'none') {
-            authSection.style.display = 'flex';
-            authSection.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            authSection.style.display = 'none';
-        }
-    });
-    
-    function showAlert(message, type){
-        alertBox.textContent = message;
-        alertBox.className = `alert ${type}`;
-        authSection.style.display = 'flex';
-    }
-
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(registerForm);
-        const restoreButton = setButtonLoading(registerForm.querySelector('button[type="submit"]'), 'Registering...');
-        try {
-            const response = await fetch('register.php', { method: 'POST', body: formData });
-            const result = await response.json();
-            if (result.status === 'success') {
-                showAlert(result.message, 'success');
-                registerForm.reset();
-            } else {
-                showAlert(result.message, 'error');
-            }
-        } catch (err) {
-            showAlert('An error occurred connecting to server.', 'error');
-        } finally {
-            restoreButton();
-        }
-    });
-
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        const restoreButton = setButtonLoading(loginForm.querySelector('button[type="submit"]'), 'Signing in...');
-        try {
-            const response = await fetch('login.php', { method: 'POST', body: formData });
-            const result = await response.json();
-            if (result.status === 'success') {
-                showAlert(result.message, 'success');
-                loginForm.reset();
-                localStorage.setItem('pizza_user', JSON.stringify(result.user));
-                checkUserSession();
-            } else {
-                showAlert(result.message, 'error');
-            }
-        } catch (err) {
-            showAlert('An error occurred connecting to the server.', 'error');
-        } finally {
-            restoreButton();
-        }
-    });
 
     const cart = [];
     const cartItemsContainer = document.getElementById('cart-items');
@@ -145,16 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     checkoutBtn.addEventListener('click', async () => {
+        const nameInput = document.getElementById('customer-name').value.trim();
         const phoneInput = document.getElementById('customer-phone').value.trim();
         const locationInput = document.getElementById('customer-location').value.trim();
 
-        if (!phoneInput || !locationInput) {
-            alert('Please enter your phone number and delivery location.');
+        if (!nameInput || !phoneInput || !locationInput) {
+            alert('Please fill in your Full Name, Phone Number, and Delivery Location.');
             return;
         }
 
         const totalVal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const userEmail = window.currentUserEmail || 'guest@manupizza.com';
 
         const restoreCheckoutButton = setButtonLoading(checkoutBtn, 'Processing order...');
         
@@ -163,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    email: userEmail,
+                    customer_name: nameInput,
                     phone: phoneInput,
                     location: locationInput,
                     cart: cart,
@@ -173,20 +109,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             if (result.status === 'success') {
-                alert(result.message);
-
                 const summaryParts = cart.map(item => `${item.title} (x${item.quantity})`);
                 const orderSummaryText = summaryParts.join(', ');
                 const whatsappNumber = "233597787700";
-                const whatsappMessage = `🍕 *NEW MANU PIZZA ORDER!* 🍕\n\n*Customer:* ${userEmail}\n*Phone:* ${phoneInput}\n*Location:* ${locationInput}\n*Items:* ${orderSummaryText}\n*Total:* ₵${totalVal.toFixed(2)}`;
+                
+                // Formatted WhatsApp message with Customer Name, Phone & Location
+                const whatsappMessage = `🍕 *NEW MANU PIZZA ORDER!* 🍕\n\n*Name:* ${nameInput}\n*Phone:* ${phoneInput}\n*Location:* ${locationInput}\n*Items:* ${orderSummaryText}\n*Total:* ₵${totalVal.toFixed(2)}`;
 
+                // Redirect directly on mobile phones to bypass popup blockers
                 const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
-                window.open(whatsappURL, '_blank');
-
+                
+                // Reset Cart and Form Inputs
                 cart.length = 0;
                 updateCartUI();
+                document.getElementById('customer-name').value = '';
                 document.getElementById('customer-phone').value = '';
                 document.getElementById('customer-location').value = '';
+
+                window.location.href = whatsappURL;
             } else {
                 alert(result.message);
             }
@@ -197,26 +137,4 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutBtn.disabled = cart.length === 0;
         }
     });
-
-    function checkUserSession() {
-        const savedUser = localStorage.getItem('pizza_user');
-        if (savedUser) {
-            const user = JSON.parse(savedUser);
-            authSection.innerHTML = `
-                <div class="form-card" style="text-align: center; max-width: 500px; margin: 0 auto;">
-                    <h2>Welcome, ${user.fullname}! 🍕</h2>
-                    <p style="color: #666; margin-bottom: 1.5rem;">Logged in as: <strong>${user.email}</strong></p>
-                    <p style="margin-bottom: 1.5rem; color: #28a745; font-weight: bold;">You are ready to order and checkout!</p>
-                    <button id="logout-btn" class="btn btn-secondary">Logout</button>
-                </div>
-            `;
-            document.getElementById('logout-btn').addEventListener('click', () => {
-                localStorage.removeItem('pizza_user');
-                window.location.reload();
-            });
-            window.currentUserEmail = user.email;
-        }
-    }
-
-    checkUserSession();
 });
