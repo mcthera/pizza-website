@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Palour</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="navbar">
+    <div class="logo">🍕 MANU Pizza</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#" id="nav-account-link">Account</a>
+        <a href="admin_login.html">MR. ADMIN</a>
+    </nav>
+</header>
+
+    <!--HERO SECTION-->
+    <section id="home" class="hero">
+        <h1>FRESH AND HOT Pizza DELIVERED LOCAL!</h1>
+        <p>ORDER TODAY</p>
+    </section>
+
+    <!-- MENU SECTION -->
+    <section id="menu" class="menu-section">
+        <h2>Our Delicious Pizza Menu</h2>
+        <div class="menu-grid">
+            <!-- Pizza Item 1 -->
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=500" alt="Margherita Pizza">
+                <h3>Classic Margherita</h3>
+                <p>Fresh tomatoes, mozzarella cheese, basil, and extra virgin olive oil.</p>
+                <span class="price">₵45.00</span>
+                <div style="margin: 0 1rem 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between;">
+                    <label style="font-size: 0.9rem; font-weight: bold;">Qty:</label>
+                    <input type="number" class="item-qty" value="1" min="1" max="20" style="width: 60px; padding: 0.4rem; text-align: center; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <button class="btn btn-primary">Add to Order</button>
+            </div>
+            <!-- Pizza Item 2 -->
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500" alt="Pepperoni Pizza">
+                <h3>Pepperoni Feast</h3>
+                <p>Loaded with spicy pepperoni, double mozzarella, and signature tomato sauce.</p>
+                <span class="price">₵55.00</span>
+                <div style="margin: 0 1rem 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between;">
+                    <label style="font-size: 0.9rem; font-weight: bold;">Qty:</label>
+                    <input type="number" class="item-qty" value="1" min="1" max="20" style="width: 60px; padding: 0.4rem; text-align: center; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <button class="btn btn-primary">Add to Order</button>
+            </div>
+            <!-- Pizza Item 3 -->
+            <div class="menu-card">
+                <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?w=500" alt="BBQ Chicken Pizza">
+                <h3>BBQ Chicken Supreme</h3>
+                <p>Grilled chicken, tangy BBQ sauce, red onions, and fresh cilantro.</p>
+                <span class="price">₵60.00</span>
+                <div style="margin: 0 1rem 0.5rem 1rem; display: flex; align-items: center; justify-content: space-between;">
+                    <label style="font-size: 0.9rem; font-weight: bold;">Qty:</label>
+                    <input type="number" class="item-qty" value="1" min="1" max="20" style="width: 60px; padding: 0.4rem; text-align: center; border: 1px solid #ccc; border-radius: 4px;">
+                </div>
+                <button class="btn btn-primary">Add to Order</button>
+            </div>
+        </div>
+    </section>
+
+    <!--CART SECTION-->
+    <section id="cart-section" class="cart-section">
+        <h2>Your Current Order</h2>
+        <div id="cart-items" class="cart-items-container">
+            <p id="empty-cart-msg">Your cart is empty. Pick a delicious pizza above!</p>
+        </div>
+        
+        <!-- CUSTOMER DELIVERY DETAILS -->
+        <div style="margin-bottom: 1.5rem; text-align: left;">
+            <div class="form-group" style="margin-bottom: 0.8rem;">
+                <label for="customer-phone">Phone Number:</label>
+                <input type="text" id="customer-phone" placeholder="e.g. 0597787700" required style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 25px;">
+            </div>
+            <div class="form-group">
+                <label for="customer-location">Delivery Location:</label>
+                <input type="text" id="customer-location" placeholder="e.g. Santasi, Kumasi" required style="width: 100%; padding: 0.8rem; border: 1px solid #ccc; border-radius: 25px;">
+            </div>
+        </div>
+
+        <div class="cart-total">
+            <h3>Total: <span id="cart-total-price">₵0.00</span></h3>
+            <button id="checkout-btn" class="btn btn-primary" style="margin-top: 1rem;" disabled>checkout Now!</button>
+        </div>
+    </section>
+
+    <!--AUTHENTICATION SECTION (HIDDEN BY DEFAULT) -->
+    <main id="auth-section" class="auth-container" style="display: none;">
+        <div id="alert-box" class="alert-hidden"></div>
+        <!--REGISTER FORM-->
+        <div class="form-card" id="register-card">
+            <h2>New User? Register Here</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-fullname">Full Name</label>
+                    <input type="text" id="reg-fullname" name="fullname" placeholder="e.g KWADWO OR KWAME" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" name="email" placeholder="mcthera@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" name="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-secondary">Register</button>
+            </form>
+        </div>
+        <!--LOGIN FORM-->
+        <div class="form-card" id="login-card">
+            <h2>Welcome Back! Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" name="email" placeholder="mcthera@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" name="password" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- GPS MAP INTEGRATION SECTION -->
+    <section style="max-width: 1200px; margin: 3rem auto; padding: 0 2rem; text-align: center;">
+        <h2 style="margin-bottom: 1rem; color: var(--dark-big);">Find Us / GPS Customer Directions</h2>
+        <p style="color: #666; margin-bottom: 1.5rem;">Visit our Kumasi branch or track your delivery route below:</p>
+        <div style="border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <iframe 
+                width="100%" 
+                height="350" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.455245892556!2d-1.6244!3d6.6885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xdef!2sKumasi%2C+Ghana!5e0!3m2!1sen!2sgh!4v1!1s!">
+            </iframe>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

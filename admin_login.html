@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - MANU Pizza</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; height: 100vh; background: var(--dark-big);">
+    
+    <div class="form-card" style="width: 100%; max-width: 400px; text-align: center;">
+        <h2 style="color: var(--primary-color);">🍕 Admin Portal Login</h2>
+        <p style="color: #666; margin-bottom: 1.5rem; font-size: 0.9rem;">Authorized personnel only</p>
+        
+        <form id="admin-login-form">
+            <div class="form-group" style="text-align: left;">
+                <label for="admin-name">Admin Name</label>
+                <input type="text" id="admin-name" placeholder="e.g. Kwadwo Manu" required>
+            </div>
+            <div class="form-group" style="text-align: left;">
+                <label for="restaurant-name">Restaurant Name</label>
+                <input type="text" id="restaurant-name" placeholder="e.g. MANU Pizza" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">Login to Dashboard</button>
+        </form>
+        <br>
+        <a href="index.html" style="color: #666; text-decoration: none; font-size: 0.85rem;">← Back to Store</a>
+    </div>
+
+    <script>
+        document.getElementById('admin-login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const adminName = document.getElementById('admin-name').value.trim();
+            const restaurantName = document.getElementById('restaurant-name').value.trim();
+
+            if (adminName && restaurantName.toLowerCase().includes('manu')) {
+                localStorage.setItem('admin_logged_in', 'true');
+                localStorage.setItem('admin_name', adminName);
+                window.location.href = 'admin.html';
+            } else {
+                alert('Invalid Admin Name or Restaurant Name!');
+            }
+        });
+    </script>
+</body>
+</html>
